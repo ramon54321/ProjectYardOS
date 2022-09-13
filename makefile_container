@@ -1,6 +1,18 @@
-build:
+#build:
+	#mkdir -p host/obj
+	#mkdir -p host/bin
+	#i686-elf-as host/src/boot.s -o host/obj/boot.o
+	#i686-elf-gcc -c host/src/kernel.c -o host/obj/kernel.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
+	#i686-elf-gcc -T host/src/linker.ld -o host/bin/os.bin -ffreestanding -O2 -nostdlib host/obj/boot.o host/obj/kernel.o -lgcc 
+
+CC = i686-elf-gcc
+
+OBJECTS = kernel.o
+
+all: host/obj/$(OBJECTS)
+
+host/obj/%.o: host/src/%.c
 	mkdir -p host/obj
-	mkdir -p host/bin
-	i686-elf-as host/src/boot.s -o host/obj/boot.o
-	i686-elf-gcc -c host/src/kernel.c -o host/obj/kernel.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
-	i686-elf-gcc -T host/src/linker.ld -o host/bin/os.bin -ffreestanding -O2 -nostdlib host/obj/boot.o host/obj/kernel.o -lgcc 
+	$(CC) -c $< -o $@ -ffreestanding -std=gnu99 -O2 -Wall -Wextra 
+
+
